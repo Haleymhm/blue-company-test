@@ -33,6 +33,6 @@ class HomeController extends Controller
 
     public function producto()
     {
-        return view('home');
+        return view('producto');
     }
 }

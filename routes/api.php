@@ -23,3 +23,8 @@ Route::get('/category', [App\Http\Controllers\CategoryController::class, 'index'
 Route::post('/category/savercat', [App\Http\Controllers\CategoryController::class, 'store'])->name('savecat');
 Route::post('/category/updatecat', [App\Http\Controllers\CategoryController::class, 'update'])->name('updatecat');
 Route::post('/category/deletecat', [App\Http\Controllers\CategoryController::class, 'destroy'])->name('deletecat');
+
+Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products');
+Route::post('/product/saverprod', [App\Http\Controllers\ProductController::class, 'store'])->name('saveprod');
+Route::post('/product/updateprod', [App\Http\Controllers\ProductController::class, 'update'])->name('updateprod');
+Route::post('/product/deleteprod', [App\Http\Controllers\ProductController::class, 'destroy'])->name('deleteprod');

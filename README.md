@@ -40,3 +40,9 @@
 
 8. Abrir un navegador e ingresar la la siguiente dirección
     ` http://127.0.0.1:8000/ `
+
+## Datos para Inicia Session
+    ``` 
+    **USER: ** admin@blue.test
+    **PASS: ** 123456789 
+    ```

@@ -23,16 +23,6 @@ class ProductController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -40,41 +30,42 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $product = new Product();
+            $product->category_id = $request->categoria_id;
+            $product->nombre_prod = $request->producto_nombre;
+            $product->valor = $request->producto_valor;
+            $product->fecha_expiracion = $request->producto_fechae;
+            $product->save();
+            return response()->json([
+                'product' => $product
+            ],201);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'msg' => 'Error al crear categoria'
+            ],400);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(Request $request)
     {
-        //
-    }
+        try {
+            $product = Product::find($request->producto_id);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+            $product->category_id = $request->categoria_id;
+            $product->nombre_prod = $request->producto_nombre;
+            $product->valor = $request->producto_valor;
+            $product->fecha_expiracion = $request->producto_fechae;
+            $product->save();
+            return response()->json([
+                'product' => $product
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'msg' => 'Error al crear categoria'
+            ],400);
+        }
     }
 
     /**
@@ -83,8 +74,20 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            $product = Product::find($request->producto_id);
+            $product->delete();
+            return response()->json([
+                'msg' => 'Categoria elminada'
+            ],200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'msg' => 'Error al crear categoria'
+            ],400);
+        }
     }
+        
+    
 }

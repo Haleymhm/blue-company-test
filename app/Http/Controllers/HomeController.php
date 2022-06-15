@@ -28,7 +28,7 @@ class HomeController extends Controller
 
     public function categoria()
     {
-        return view('home');
+        return view('categoria');
     }
 
     public function producto()

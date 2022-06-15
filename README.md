@@ -5,7 +5,7 @@
 2. Tener instalado composer
 3. Tener instalado Node.js
 
-## Instalacion
+## Instalación
 
 1. Clonar el proyecto
    ` git clone https://github.com/Haleymhm/blue-company-test.git `
@@ -19,7 +19,7 @@
 4. Instalar y compilar las librerias de Javascript
     ` npm install && npm run dev `
 
-5. Configurar el archivo ` .env ` con la conexion a la base de datos
+5. Configurar el archivo ` .env ` con la conexión a la base de datos
 
 6. Ejecutar las migracioes y los datos de pruebas
     ` php artisan migrate --seed `
@@ -27,5 +27,5 @@
 7. Iniciar la aplicacion
     ` php artisan serve `
 
-8. Abrir un navegador e ingresar la la siguiente direccion
+8. Abrir un navegador e ingresar la la siguiente dirección
     ` http://127.0.0.1:8000/ `

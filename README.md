@@ -11,21 +11,21 @@
    ` git clone https://github.com/Haleymhm/blue-company-test.git `
 
 2. Ingresar a la carpeta del proyecto
-    ` cd blue-company-test `
+    ``` cd blue-company-test ```
 
 3. Instalar las librerias de laravel
-    ` composer install `
+    ``` composer install ```
 
 4. Instalar y compilar las librerias de Javascript
-    ` npm install && npm run dev `
+    ``` npm install && npm run dev ```
 
 5. Configurar el archivo ` .env ` con la conexión a la base de datos
 
 6. Ejecutar las migracioes y los datos de pruebas
-    ` php artisan migrate --seed `
+    ``` php artisan migrate --seed ```
 
 7. Iniciar la aplicacion
-    ` php artisan serve `
+    ``` php artisan serve ```
 
 8. Abrir un navegador e ingresar la la siguiente dirección
     ` http://127.0.0.1:8000/ `

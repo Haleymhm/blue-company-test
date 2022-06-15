@@ -7,7 +7,7 @@
                 <div class="card-header  justify-content-between align-items-center">                               
                     <div class="row">                    
                         <div class="col-sm-7">
-                            <h4 style="display: inline-block;"> Categoria de productos </h4>
+                            <h4 style="display: inline-block;"> Categorias </h4>
                             <button type="button" class="btn btn-primary"  @click="editar=false;abrirModal();"><i class="bi bi-plus-circle"></i></button>
                         </div>
                         

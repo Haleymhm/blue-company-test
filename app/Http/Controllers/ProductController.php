@@ -15,10 +15,21 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $txtSearch = $request->input('search');
-        $productos = Product::join('categories','categories.id', '=' ,'products.category_id')
-                            ->where('nombre_prod', 'LIKE', '%'. $txtSearch. '%')
-                            ->select('products.*', 'categories.categoria')
-                            ->paginate(10);
+        $searchCat = $request->input('cat');
+                            
+        if($searchCat){
+            $productos = Product::join('categories','categories.id', '=' ,'products.category_id')
+                                ->select('products.*', 'categories.categoria')
+                                ->Where('products.category_id','=',$searchCat)->paginate(10);
+        }elseif($txtSearch){
+            $productos = Product::join('categories','categories.id', '=' ,'products.category_id')
+                                ->select('products.*', 'categories.categoria')
+                                ->where('nombre_prod', 'LIKE', '%'. $txtSearch. '%')->paginate(10);
+        }else{
+            $productos = Product::join('categories','categories.id', '=' ,'products.category_id')
+                                ->select('products.*', 'categories.categoria')->paginate(10);
+        }
+                            
         return response()->json($productos);
     }
 

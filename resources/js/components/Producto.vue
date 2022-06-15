@@ -10,7 +10,7 @@
                             <button type="button" class="btn btn-primary btn-sm"  @click="editar=false;abrirModal();"><i class="bi bi-plus-circle"></i></button>
                         </div>
                         <div class="col-sm-4">
-                            <select name="" id="" class="form-control" v-model="buscarCat"  >
+                            <select name="" id="" class="form-control" v-model="buscarCat"  @change="listarProductos()">
                                 <option value="">Seleccione Categoria</option>
                                 <option v-for="categoria in categorias.data" :key="categoria.id" :value="categoria.id">{{ categoria.categoria }}</option>
                             </select>
@@ -22,7 +22,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text bg-transparent border-right-0" id="basic-addon1"><i class="bi bi-search"></i></span>
                                 </div>
-                                <input type="search" class="form-control" placeholder="Buscar">
+                                <input type="search" class="form-control" placeholder="Buscar" v-on:keyup="listarProductos()">
                             </div>
                         </div>
                     </div>
@@ -56,6 +56,22 @@
                             </tbody>
                         </table>
                     </div>
+            </div>
+
+            <div class="card-footer">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item" v-show="productos['first_page_url']">
+                                <button class="page-link" @click.prevent="getPreviousPage"><i class="bi bi-chevron-double-left" aria-hidden="true"></i></button>
+                            </li>
+                            <li class="page-item" :class="{ 'active': (productos['current_page']=== n) }" v-for="n in productos['last_page']" :key="n">
+                                <button class="page-link" @click.prevent="getPage(n)"> {{ n }} </button>
+                            </li>
+                            <li class="page-item" v-show="productos['last_page_url']">
+                                <button class="page-link" @click.prevent="getNextPage"><i class="bi bi-chevron-double-right" aria-hidden="true"></i></button>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
         </div>
     </div>
@@ -134,7 +150,7 @@ export default {
 
     methods:{
         async listarProductos(){
-            await axios.get('/api/products/?search='+this.buscar).then((res) => {                    
+            await axios.get('/api/products/?search='+this.buscar+'&cat='+this.buscarCat).then((res) => {                    
                 console.log(res.data);
                 this.productos=res.data;
             });
@@ -196,12 +212,37 @@ export default {
                                     type: 'success',
                                     text: 'EL producto fue <strong>actualizado</strong> con exito'
                                 });
-                        this.listarCategorias();
+                        this.listarProductos();
                         this.modal.mostrar=false;
                     })
                     .catch(error => {
                         this.msgNombre=1;
                     });
+            }
+        },
+
+        confirmEliminar(product={}){
+            let x = confirm('Desea eliminar '+ product.nombre_prod);
+            if (x){
+                let producto = {
+                    producto_id: product.id,
+                    producto_nombre: product.nombre_prod
+                };
+                axios.post('/api/product/deleteprod', producto)
+                .then((resp)=>{
+                    console.log(resp.data.success);
+                    this.$notify({
+                            group: 'foo',
+                            title: 'Borrar categorÍa',
+                            type: 'success',
+                            text: 'La categoria fue <strong>borrada</strong> con exito'
+                        });
+                    this.listarProductos();
+                    
+                })
+                .catch(error => {
+                    this.modalborrar.msg = 1;
+                });
             }
         },
 

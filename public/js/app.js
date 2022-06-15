@@ -5661,6 +5661,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5697,7 +5713,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get('/api/products/?search=' + _this.buscar).then(function (res) {
+                return axios.get('/api/products/?search=' + _this.buscar + '&cat=' + _this.buscarCat).then(function (res) {
                   console.log(res.data);
                   _this.productos = res.data;
                 });
@@ -5785,7 +5801,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             text: 'EL producto fue <strong>actualizado</strong> con exito'
           });
 
-          _this3.listarCategorias();
+          _this3.listarProductos();
 
           _this3.modal.mostrar = false;
         })["catch"](function (error) {
@@ -5793,30 +5809,57 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         });
       }
     },
+    confirmEliminar: function confirmEliminar() {
+      var _this4 = this;
+
+      var product = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var x = confirm('Desea eliminar ' + product.nombre_prod);
+
+      if (x) {
+        var producto = {
+          producto_id: product.id,
+          producto_nombre: product.nombre_prod
+        };
+        axios.post('/api/product/deleteprod', producto).then(function (resp) {
+          console.log(resp.data.success);
+
+          _this4.$notify({
+            group: 'foo',
+            title: 'Borrar categorÍa',
+            type: 'success',
+            text: 'La categoria fue <strong>borrada</strong> con exito'
+          });
+
+          _this4.listarProductos();
+        })["catch"](function (error) {
+          _this4.modalborrar.msg = 1;
+        });
+      }
+    },
 
     /** */
     getPage: function getPage(page) {
-      var _this4 = this;
-
-      axios.get('/api/category/?page=' + page).then(function (res) {
-        console.log(res.data);
-        _this4.productos = res.data;
-      });
-    },
-    getPreviousPage: function getPreviousPage() {
       var _this5 = this;
 
-      axios.get(this.productos['first_page_url']).then(function (res) {
+      axios.get('/api/category/?page=' + page).then(function (res) {
         console.log(res.data);
         _this5.productos = res.data;
       });
     },
-    getNextPage: function getNextPage() {
+    getPreviousPage: function getPreviousPage() {
       var _this6 = this;
+
+      axios.get(this.productos['first_page_url']).then(function (res) {
+        console.log(res.data);
+        _this6.productos = res.data;
+      });
+    },
+    getNextPage: function getNextPage() {
+      var _this7 = this;
 
       axios.get(this.productos['last_page_url']).then(function (res) {
         console.log(res.data);
-        _this6.productos = res.data;
+        _this7.productos = res.data;
       });
     }
     /** */
@@ -28514,7 +28557,7 @@ var render = function () {
               _c("div", { staticClass: "row" }, [
                 _c("div", { staticClass: "col-sm-7" }, [
                   _c("h4", { staticStyle: { display: "inline-block" } }, [
-                    _vm._v(" Categoria de productos "),
+                    _vm._v(" Categorias "),
                   ]),
                   _vm._v(" "),
                   _c(
@@ -28976,19 +29019,24 @@ var render = function () {
                       staticClass: "form-control",
                       attrs: { name: "", id: "" },
                       on: {
-                        change: function ($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function (o) {
-                              return o.selected
-                            })
-                            .map(function (o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.buscarCat = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        },
+                        change: [
+                          function ($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function (o) {
+                                return o.selected
+                              })
+                              .map(function (o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.buscarCat = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          },
+                          function ($event) {
+                            return _vm.listarProductos()
+                          },
+                        ],
                       },
                     },
                     [
@@ -29011,7 +29059,21 @@ var render = function () {
                   ),
                 ]),
                 _vm._v(" "),
-                _vm._m(0),
+                _c("div", { staticClass: "col-sm-4" }, [
+                  _c("div", { staticClass: "input-group  mb-3" }, [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "search", placeholder: "Buscar" },
+                      on: {
+                        keyup: function ($event) {
+                          return _vm.listarProductos()
+                        },
+                      },
+                    }),
+                  ]),
+                ]),
               ]),
             ]
           ),
@@ -29091,6 +29153,113 @@ var render = function () {
                     0
                   ),
                 ]
+              ),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-footer" }, [
+            _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+              _c(
+                "ul",
+                { staticClass: "pagination justify-content-end" },
+                [
+                  _c(
+                    "li",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.productos["first_page_url"],
+                          expression: "productos['first_page_url']",
+                        },
+                      ],
+                      staticClass: "page-item",
+                    },
+                    [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "page-link",
+                          on: {
+                            click: function ($event) {
+                              $event.preventDefault()
+                              return _vm.getPreviousPage.apply(null, arguments)
+                            },
+                          },
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "bi bi-chevron-double-left",
+                            attrs: { "aria-hidden": "true" },
+                          }),
+                        ]
+                      ),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm._l(_vm.productos["last_page"], function (n) {
+                    return _c(
+                      "li",
+                      {
+                        key: n,
+                        staticClass: "page-item",
+                        class: { active: _vm.productos["current_page"] === n },
+                      },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "page-link",
+                            on: {
+                              click: function ($event) {
+                                $event.preventDefault()
+                                return _vm.getPage(n)
+                              },
+                            },
+                          },
+                          [_vm._v(" " + _vm._s(n) + " ")]
+                        ),
+                      ]
+                    )
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.productos["last_page_url"],
+                          expression: "productos['last_page_url']",
+                        },
+                      ],
+                      staticClass: "page-item",
+                    },
+                    [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "page-link",
+                          on: {
+                            click: function ($event) {
+                              $event.preventDefault()
+                              return _vm.getNextPage.apply(null, arguments)
+                            },
+                          },
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "bi bi-chevron-double-right",
+                            attrs: { "aria-hidden": "true" },
+                          }),
+                        ]
+                      ),
+                    ]
+                  ),
+                ],
+                2
               ),
             ]),
           ]),
@@ -29336,24 +29505,15 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-sm-4" }, [
-      _c("div", { staticClass: "input-group  mb-3" }, [
-        _c("div", { staticClass: "input-group-prepend" }, [
-          _c(
-            "span",
-            {
-              staticClass: "input-group-text bg-transparent border-right-0",
-              attrs: { id: "basic-addon1" },
-            },
-            [_c("i", { staticClass: "bi bi-search" })]
-          ),
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: { type: "search", placeholder: "Buscar" },
-        }),
-      ]),
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c(
+        "span",
+        {
+          staticClass: "input-group-text bg-transparent border-right-0",
+          attrs: { id: "basic-addon1" },
+        },
+        [_c("i", { staticClass: "bi bi-search" })]
+      ),
     ])
   },
   function () {

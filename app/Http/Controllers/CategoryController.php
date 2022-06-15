@@ -30,7 +30,9 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         try {
-            $category = Category::create($request->post());
+            $category = new Category;
+            $category->categoria = $request->categoria_nombre;
+            $category->save();
             return response()->json([
                 'category' => $category
             ],201);
@@ -42,30 +44,19 @@ class CategoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Category $category)
-    {
-        return response()->json([
-            'category' => $category
-        ],200);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request)
     {
         
         try {
-            $category->fill($request->post())->save();
+            $category = Category::find($request->categoria_id);
+            $category->categoria = $request->categoria_nombre;
+            $category->save();
             return response()->json([
                 'category' => $category
             ],200);
@@ -82,10 +73,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request)
     {
         
         try {
+            $category = Category::find($request->categoria_id);
             $category->delete();
             return response()->json([
                 'msg' => 'Categoria elminada'

@@ -33,8 +33,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
+                        @auth
                             <a class="nav-link"  href="{{ route('categoria') }}">Categorias</a>
-                            <a class="nav-link"  href="{{ route('producto') }}">Producto</a>            
+                            <a class="nav-link"  href="{{ route('producto') }}">Producto</a> 
+                        @endauth                   
                     </ul>
 
                     <!-- Right Side Of Navbar -->

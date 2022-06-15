@@ -1,7 +1,8 @@
 <template>
-    <div class="row">
 
-        <div class="col-12 mt-3">
+    <div class="row">
+        <notifications group="foo" />
+        <div class="col-9 mt-3 ml-0">
             <div class="card">
                 <div class="card-header  justify-content-between align-items-center">                               
                     <div class="row">                    
@@ -36,8 +37,8 @@
                                     <td class="text-info"> {{ categoria.id }} </td>
                                     <td class="text-info"> {{ categoria.categoria}} </td>
                                     <td class="text-info" style="text-align: center;"> 
-                                        <button class="btn btn-info btn-sm"><i class="bi bi-pencil-square"></i></button>
-                                        <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                        <button @click="editar=true;abrirModal(categoria);" class="btn btn-info btn-sm"><i class="bi bi-pencil-square"></i></button>
+                                        <button @click="confirmEliminar(categoria)" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -62,41 +63,34 @@
             </div>
         </div>
 
-        <!-- Modal -->
-
-        <div class="modal" v-if="modal.mostrar" >
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{modal.titulo}}</h5>
-                        <button type="button"  class="btn btn-outline-danger" v-on:click="modal.mostrar=false">
+        <div class="col-3 mt-3">
+            <div class="card text-center"  v-if="modal.mostrar">
+                <div class="card-header">
+                    {{modal.titulo}} <button type="button"  class="btn btn-outline-danger" v-on:click="modal.mostrar=false">
                             <span aria-hidden="true">X</span>
                         </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-row">
-                            <div class="form-group col-md-2" v-if="editar">
+                </div>
+                <div class="card-body">
+
+                            <div class="form-group" v-if="editar">
                                 <label for="Codigo">* Codigo</label>
-                                <input v-model="categoria.id" id="Codigo" type="text" class="form-control" disabled>
-
+                                <input v-model="categoria.id" id="Codigo" type="text" class="form-control" readonly>
                             </div>
-                            <div class="form-group col-md-10">
+                            <div class="form-group">
                                 <label for="Nombre">* Nombre</label>
-                                <input v-model="categoria.nombre" id="Nombre" type="text" class="form-control" required>
-
-                            </div>
-                            
+                                <input v-model="categoria.nombre" id="Nombre" type="text" class="form-control form-control-sm" required>
+                            </div>                            
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" v-on:click="guardarCategoria();" >Guardar</button>
-                        <button type="button" class="btn btn-secondary" v-on:click="modal.mostrar=0" >Cerrar</button>
-                    </div>
+
+                <div class="card-footer">
+                    <button type="button" class="btn btn-primary btn-sm" v-on:click="guardarCategoria();" >Guardar</button>
+                    <button type="button" class="btn btn-secondary btn-sm" v-on:click="modal.mostrar=0" >Cerrar</button>
                 </div>
             </div>
         </div>
-        <!--/ Modal -->
+
     </div>
+
 </template>
 
 <script>
@@ -138,20 +132,79 @@ export default {
 
         },
         abrirModal(category={}){
-            this.categoria.codigo = category.id;
+            this.categoria.id = category.id;
             this.categoria.nombre = category.categoria;
             this.modal.mostrar=true;
-            console.log('Modal Abrir: '+this.modal.mostrar);
         },
         guardarCategoria(){
+            console.log('Inicio Funcion Guardar');
+            let categoria = {
+                categoria_id: this.categoria.id,
+                categoria_nombre: this.categoria.nombre
+            };
+
+            if(this.editar==false){
+                console.log('Funcion Crear');
+                axios.post('api/category/savercat', categoria)
+                    .then((res) => {                    
+                        console.log(res.data);
+                        this.$notify({
+                                    group: 'foo',
+                                    title: 'Crear categoria',
+                                    type: 'success',
+                                    text: 'La categoria fue creado con exito'
+                                });
+                        this.listarCategorias();
+                        this.modal.mostrar=false;
+                    })
+                    .catch(error => {
+                        this.msgNombre=1;
+                    });
+            }
+
+            if(this.editar==true){
+                console.log('Funcion ediat');
+                axios.post('/api/category/updatecat', categoria)
+                    .then((res) => {                    
+                        console.log(res.data);
+                        this.$notify({
+                                    group: 'foo',
+                                    title: 'Crear categoria',
+                                    type: 'success',
+                                    text: 'La categoria fue creado con exito'
+                                });
+                        this.listarCategorias();
+                        this.modal.mostrar=false;
+                    })
+                    .catch(error => {
+                        this.msgNombre=1;
+                    });
+            }
 
         },
-        confirmEliminar(marca){
-            
-        },
-
-        eliminar(){
-
+        confirmEliminar(category={}){
+            let x = confirm('Desea eliminar '+ category.categoria);
+            if (x){
+                let categoria = {
+                    categoria_id: category.id,
+                    categoria_nombre: category.categoria
+                };
+                axios.post('/api/category/deletecat', categoria)
+                .then((resp)=>{
+                    console.log(resp.data.success);
+                    this.$notify({
+                            group: 'foo',
+                            title: 'Borrar categorÍa',
+                            type: 'success',
+                            text: 'La categoria fue borrada con exito'
+                        });
+                    this.listarCategorias();
+                    
+                })
+                .catch(error => {
+                    this.modalborrar.msg = 1;
+                });
+            }
         },
 
         /** */

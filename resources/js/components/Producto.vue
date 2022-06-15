@@ -7,11 +7,11 @@
                     <div class="row">                    
                         <div class="col-sm-4">
                             <h4 style="display: inline-block;">Productos</h4>
-                            <button type="button" class="btn btn-primary btn-sm"  >Nueva</button>
+                            <button type="button" class="btn btn-primary btn-sm"  ><i class="bi bi-plus-circle"></i></button>
                         </div>
                         <div class="col-sm-4">
                             <select name="" id="" class="form-control">
-                                <option value="">Categorias</option>
+                                <option value="">Selecione Categoria</option>
                             </select>
                         </div>
                         
@@ -41,12 +41,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="categoria in categorias.data" :key="categoria.id" class="zoom" >
-                                    <td class="text-info"> {{ categoria.id }} </td>
-                                    <td class="text-info"> {{ categoria.categoria}} </td>
+                                <tr v-for="producto in productos.data" :key="producto.id" class="zoom" >
+                                    <td class="text-info"> {{ producto.id }} </td>
+                                    <td class="text-info"> {{ producto.categoria }} </td>
+                                    <td class="text-info"> {{ producto.nombre_prod}} </td>
+                                    <td class="text-info"> {{ producto.valor}} </td>
+                                    <td class="text-info"> {{ producto.fecha_expiracion}} </td>
                                     <td class="text-info" style="text-align: center;"> 
-                                        <button @click="editar=true;abrirModal(categoria);" class="btn btn-info btn-sm"><i class="bi bi-pencil-square"></i></button>
-                                        <button @click="confirmEliminar(categoria)" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                        <button @click="editar=true;abrirModal(producto);" class="btn btn-info btn-sm"><i class="bi bi-pencil-square"></i></button>
+                                        <button @click="confirmEliminar(producto)" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -64,6 +67,7 @@ export default {
         return{
             productos:{},
             buscar:'',
+            buscarCat:'',
             editar:false,
             msgNombre:0,
             producto:{
@@ -83,6 +87,21 @@ export default {
                 nombre:''
             },
         }  
+    },
+
+    methods:{
+        async listarProductos(){
+
+            await axios.get('/api/products/?search='+this.buscar).then((res) => {                    
+                console.log(res.data);
+                this.productos=res.data;
+            });
+
+        },
+    },
+
+    created(){
+        this.listarProductos();
     },
 
 }

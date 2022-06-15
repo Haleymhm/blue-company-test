@@ -8,7 +8,7 @@
                     <div class="row">                    
                         <div class="col-sm-7">
                             <h4 style="display: inline-block;"> Categoria de productos </h4>
-                            <button type="button" class="btn btn-primary"  @click="editar=false;abrirModal();">Nueva</button>
+                            <button type="button" class="btn btn-primary"  @click="editar=false;abrirModal();"><i class="bi bi-plus-circle"></i></button>
                         </div>
                         
                         <div class="col-sm-5">
@@ -83,8 +83,8 @@
                         </div>
 
                 <div class="card-footer">
-                    <button type="button" class="btn btn-primary btn-sm" v-on:click="guardarCategoria();" >Guardar</button>
-                    <button type="button" class="btn btn-secondary btn-sm" v-on:click="modal.mostrar=0" >Cerrar</button>
+                    <button type="button" class="btn btn-secondary btn-sm" v-on:click="modal.mostrar=0" ><i class="bi bi-arrow-return-left"></i></button>
+                    <button type="button" class="btn btn-success btn-sm" v-on:click="guardarCategoria();" ><i class="bi bi-check-square"></i></button>
                 </div>
             </div>
         </div>

@@ -12,9 +12,14 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $txtSearch = $request->input('search');
+        $productos = Product::join('categories','categories.id', '=' ,'products.category_id')
+                            ->where('nombre_prod', 'LIKE', '%'. $txtSearch. '%')
+                            ->select('products.*', 'categories.categoria')
+                            ->paginate(10);
+        return response()->json($productos);
     }
 
     /**

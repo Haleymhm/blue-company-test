@@ -115,7 +115,7 @@ export default {
 
         /** */
         getPage(page){
-            axios.get('/api/category/?page='+page).then((res)=>{                   
+            axios.get('/api/getProducts/?page='+page).then((res)=>{                   
                 console.log(res.data);
                 this.productos=res.data;
             });

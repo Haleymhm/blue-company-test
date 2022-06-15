@@ -5841,7 +5841,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getPage: function getPage(page) {
       var _this5 = this;
 
-      axios.get('/api/category/?page=' + page).then(function (res) {
+      axios.get('/api/products/?page=' + page).then(function (res) {
         console.log(res.data);
         _this5.productos = res.data;
       });
@@ -6070,7 +6070,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getPage: function getPage(page) {
       var _this5 = this;
 
-      axios.get('/api/category/?page=' + page).then(function (res) {
+      axios.get('/api/getProducts/?page=' + page).then(function (res) {
         console.log(res.data);
         _this5.productos = res.data;
       });

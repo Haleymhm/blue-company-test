@@ -43,6 +43,6 @@
 
 ## Datos para Inicia Session
     ``` 
-    **USER: ** admin@blue.test
-    **PASS: ** 123456789 
+    USER: admin@blue.test
+    PASS: 123456789 
     ```

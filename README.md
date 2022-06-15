@@ -1,3 +1,4 @@
+<img src="https://bluecompany.cl/assets/img/bluecompany-logo-blue.svg">
 # Evaluación práctica BLUE Company
 
 ## Requerimientos

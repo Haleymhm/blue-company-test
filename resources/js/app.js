@@ -9,6 +9,7 @@ Vue.use(Notifications);
 //import categoria from './components/Categoria.vue';
 Vue.component('categorias', require('./components/Categoria.vue').default);
 Vue.component('productos', require('./components/Producto.vue').default);
+Vue.component('welcome', require('./components/Welcome.vue').default);
 
 const app = new Vue({
     el: '#app',

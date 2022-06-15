@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -13,74 +14,36 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function getProducts()
     {
-        //
+        $productos = Product::join('categories','categories.id', '=' ,'products.category_id')
+                            ->select('products.*', 'categories.categoria')->paginate(10);
+        return response()->json($productos);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getForCategory(Request $request)
     {
-        //
+        $searchCat = $request->input('category_id');
+        $productos = Product::join('categories','categories.id', '=' ,'products.category_id')
+                            ->select('products.*', 'categories.categoria')
+                            ->Where('products.category_id','=',$searchCat)->paginate(10);
+        return response()->json($productos);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function getForText(Request $request)
     {
-        //
+        $txtSearch = $request->input('search');
+        $productos = Product::join('categories','categories.id', '=' ,'products.category_id')
+                            ->select('products.*', 'categories.categoria')
+                            ->where('nombre_prod', 'LIKE', '%'. $txtSearch. '%')->paginate(10);
+        return response()->json($productos);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Product $product)
+    public function getCategories()
     {
-        //
+        $category = Category::All();
+        return response()->json($category);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Product $product)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Product  $product
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Product $product)
-    {
-        //
-    }
 }

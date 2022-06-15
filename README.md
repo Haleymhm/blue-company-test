@@ -1,6 +1,6 @@
-# Evaluacion practica BLUE Company
+# Evaluación práctica BLUE Company
 
-## Requerimeintos
+## Requerimientos
 1. Tener instalado un servidor con Apache 2,  PHP 7.2 o superior, Mysql 5.6 o superior
 2. Tener instalado composer
 3. Tener instalado Node.js
@@ -15,24 +15,24 @@
     cd blue-company-test 
     ```
 
-3. Instalar las librerias de laravel
+3. Instalar las librerías de laravel
     ``` 
     composer install 
     ```
 
-4. Instalar y compilar las librerias de Javascript
+4. Instalar y compilar las librerías de Javascript
     ``` 
     npm install && npm run dev 
     ```
 
 5. Configurar el archivo ` .env ` con la conexión a la base de datos
 
-6. Ejecutar las migracioes y los datos de pruebas
+6. Ejecutar las migraciones y los datos de pruebas
     ``` 
     php artisan migrate --seed 
     ```
 
-7. Iniciar la aplicacion
+7. Iniciar la aplicación
     ``` 
     php artisan serve 
     ```

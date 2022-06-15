@@ -11,7 +11,9 @@
    ` git clone https://github.com/Haleymhm/blue-company-test.git `
 
 2. Ingresar a la carpeta del proyecto
-    ``` cd blue-company-test ```
+    ``` 
+    cd blue-company-test 
+    ```
 
 3. Instalar las librerias de laravel
     ``` composer install ```
